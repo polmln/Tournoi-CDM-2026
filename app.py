@@ -1,0 +1,45 @@
+from flask import Flask, jsonify
+from flask_cors import CORS
+
+from coupe_du_monde import simuler_tournoi, equipes, coupes_gagnees, drapeaux
+import base_donnees as bd
+
+app = Flask(__name__)
+CORS(app)
+
+bd.initialiser()
+
+
+@app.route("/equipes")
+def liste_equipes():
+    return jsonify([
+        {"nom": nom, "drapeau": drapeaux.get(nom, "un"), "titres": coupes_gagnees.get(nom, 0)}
+        for nom in equipes
+    ])
+
+
+@app.route("/tournoi")
+def tournoi():
+    gagnant = simuler_tournoi()
+    code_drapeau = drapeaux.get(gagnant, "un")
+    bd.enregistrer_resultat(gagnant)
+    return jsonify(gagnant=gagnant, drapeau=code_drapeau)
+
+
+@app.route("/historique")
+def historique():
+    return jsonify(bd.recuperer_historique())
+
+
+@app.route("/historique/effacer", methods=["POST"])
+def effacer_historique():
+    bd.clear_historique()
+    return jsonify({"message": "Historique effacé avec succès."})
+
+@app.route("/historique/effacer_sauf_france", methods=["POST"])
+def effacer_historique_gagnants_france():
+    bd.clear_keep_france()
+    return jsonify({"message": "Historique effacé sauf pour la France."})
+
+if __name__ == "__main__":
+    app.run(port=5000, debug=True)
