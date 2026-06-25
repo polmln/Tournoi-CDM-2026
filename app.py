@@ -9,6 +9,9 @@ CORS(app)
 
 bd.initialiser()
 
+@app.route('/')
+def index():
+    return render_template('coupe-du-monde.html')
 
 @app.route("/equipes")
 def liste_equipes():

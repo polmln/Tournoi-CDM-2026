@@ -99,7 +99,7 @@
     function afficherEquipes() {
       const conteneur = document.getElementById("equipes");
 
-      fetch("http://localhost:5000/equipes")
+      fetch("https://tournoi-cdm-2026-1.onrender.com/equipes")
         .then(reponse => reponse.json())
         .then(donnees => {
           conteneur.innerHTML = donnees.map(equipe => `
@@ -121,7 +121,7 @@
       const resultat = document.getElementById("resultat");
       resultat.innerHTML = "<p>Simulation en cours...</p>";
 
-      fetch("http://localhost:5000/tournoi")
+      fetch("https://tournoi-cdm-2026-1.onrender.com/tournoi")
         .then(reponse => reponse.json())
         .then(donnees => {
           resultat.innerHTML = `
@@ -138,7 +138,7 @@
       const historique = document.getElementById("historique");
       historique.innerHTML = "<p>Chargement...</p>";
 
-      fetch("http://localhost:5000/historique")
+      fetch("https://tournoi-cdm-2026-1.onrender.com/historique")
         .then(reponse => reponse.json())
         .then(donnees => {
           if (donnees.length === 0) {
@@ -155,7 +155,7 @@
     }
 
     function effacerHistorique() {
-      fetch("http://localhost:5000/historique/effacer", { method: "POST" })
+      fetch("https://tournoi-cdm-2026-1.onrender.com/historique/effacer", { method: "POST" })
         .then(reponse => reponse.json())
         .then(donnees => {
           alert(donnees.message);
@@ -167,7 +167,7 @@
     }
 
     function effacerHistoriqueGagnantsFrance() {
-      fetch("http://localhost:5000/historique/effacer_sauf_france", { method: "POST" })
+      fetch("https://tournoi-cdm-2026-1.onrender.com/historique/effacer_sauf_france", { method: "POST" })
         .then(reponse => reponse.json())
         .then(donnees => {
           alert(donnees.message);
