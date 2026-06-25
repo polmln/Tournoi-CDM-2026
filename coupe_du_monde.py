@@ -14,7 +14,6 @@ equipes = [
     "Argentine", "Autriche", "Algerie", "Jordanie",
     "Portugal", "Colombie", "RD Congo", "Ouzbekistan",
     "Angleterre", "Croatie", "Panama", "Ghana",
-    # 16 equipes supplementaires
     "Pologne", "Serbie", "Ukraine", "Roumanie",
     "Nigeria", "Cameroun", "Mali", "Kenya",
     "Chili", "Venezuela", "Bolivie", "Costa Rica",

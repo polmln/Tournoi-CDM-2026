@@ -48,6 +48,10 @@ def effacer_historique_gagnants_france():
 def equipe_preferee():
     return render_template('equipe-preferee.html')
 
+@app.route('/equipe-preferee')
+def equipe_preferee():
+    return render_template('coupe-du-monde.html')
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
