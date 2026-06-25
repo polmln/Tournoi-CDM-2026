@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from flask_cors import CORS
 
 from coupe_du_monde import simuler_tournoi, equipes, coupes_gagnees, drapeaux
@@ -11,7 +11,7 @@ bd.initialiser()
 
 @app.route('/')
 def index():
-    return render_template('templates/coupe-du-monde.html')
+    return render_template('coupe-du-monde.html')
 
 @app.route("/equipes")
 def liste_equipes():
