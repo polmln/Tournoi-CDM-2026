@@ -13,10 +13,12 @@ def initialiser():
             date TEXT NOT NULL
         )
     """)
-    connexion.execute("""CREATE TABLE IF NOT EXISTS equipe_preferee (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    equipe TEXT NOT NULL
-)""")
+    connexion.execute("""
+        CREATE TABLE IF NOT EXISTS equipe_preferee (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            equipe TEXT NOT NULL
+        )
+    """)
     connexion.commit()
     connexion.close()
 
