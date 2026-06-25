@@ -11,7 +11,7 @@ bd.initialiser()
 
 @app.route('/')
 def index():
-    return render_template('coupe-du-monde.html')
+    return render_template('templates/coupe-du-monde.html')
 
 @app.route("/equipes")
 def liste_equipes():
