@@ -13,6 +13,10 @@ def initialiser():
             date TEXT NOT NULL
         )
     """)
+    connexion.execute("""CREATE TABLE IF NOT EXISTS equipe_preferee (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    equipe TEXT NOT NULL
+)""")
     connexion.commit()
     connexion.close()
 
@@ -47,3 +51,18 @@ def clear_keep_france():
     connexion.execute("DELETE FROM historique WHERE gagnant IS NOT 'France'")
     connexion.commit()
     connexion.close()
+
+def sauvegarder_equipe_preferee(equipe):
+    conn = sqlite3.connect("tournoi.db")
+    c = conn.cursor()
+    c.execute("INSERT INTO equipe_preferee (equipe) VALUES (?)", (equipe,))
+    conn.commit()
+    conn.close()
+
+def recuperer_equipe_preferee():
+    conn = sqlite3.connect("tournoi.db")
+    c = conn.cursor()
+    c.execute("SELECT equipe FROM equipe_preferee ORDER BY id DESC LIMIT 1")
+    result = c.fetchone()
+    conn.close()
+    return result[0] if result else None

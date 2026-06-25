@@ -300,13 +300,21 @@
     }
 
     function confirmer() {
-      if (!equipeChoisie) return;
-      document.getElementById("grille").style.display = "none";
-      document.getElementById("barre").style.display = "none";
-      document.getElementById("recherche").parentElement.style.display = "none";
-      const msg = document.getElementById("message-final");
-      document.getElementById("texte-final").textContent = `Allez ${equipeChoisie.nom} ! 🎉`;
-      msg.style.display = "block";
+        if (!equipeChoisie) return;
+        fetch("https://tournoi-cdm-2026-1.onrender.com/equipe-preferee/sauvegarder", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ equipe: equipeChoisie.nom })
+        })
+        .then(r => r.json())
+        .then(() => {
+            document.getElementById("grille").style.display = "none";
+            document.getElementById("barre").style.display = "none";
+            document.getElementById("recherche").parentElement.style.display = "none";
+            const msg = document.getElementById("message-final");
+            document.getElementById("texte-final").textContent = `Allez ${equipeChoisie.nom} ! 🎉`;
+            msg.style.display = "block";
+        });
     }
   </script>
 

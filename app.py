@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 
 from coupe_du_monde import simuler_tournoi, equipes, coupes_gagnees, drapeaux
@@ -48,7 +48,11 @@ def effacer_historique_gagnants_france():
 def equipe_preferee():
     return render_template('equipe-preferee.html')
 
-
+@app.route("/equipe-preferee/sauvegarder", methods=["POST"])
+def sauvegarder_preferee():
+    data = request.get_json()
+    bd.sauvegarder_equipe_preferee(data["equipe"])
+    return jsonify({"message": "Équipe sauvegardée !"})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
