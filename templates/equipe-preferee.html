@@ -251,10 +251,12 @@
   </div>
 
   <script>
+    const baseurl = "http://localhost:5000"   
+    //const baseurl = "https://tournoi-cdm-2026-1.onrender.com"
     let toutesLesEquipes = [];
     let equipeChoisie = null;
 
-    fetch("https://tournoi-cdm-2026-1.onrender.com/equipes")
+    fetch(`${baseurl}/equipes`)
       .then(r => r.json())
       .then(data => {
         toutesLesEquipes = data;
@@ -301,7 +303,7 @@
 
     function confirmer() {
         if (!equipeChoisie) return;
-        fetch("https://tournoi-cdm-2026-1.onrender.com/sauvegarder", {
+        fetch(`${baseurl}/sauvegarder`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ equipe: equipeChoisie.nom })

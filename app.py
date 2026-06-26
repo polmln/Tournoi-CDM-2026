@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 
@@ -53,6 +55,11 @@ def sauvegarder_preferee():
     data = request.get_json()
     bd.sauvegarder_equipe_preferee(data["equipe"])
     return jsonify({"message": "Équipe sauvegardée !"})
+
+@app.route("/recuperer")
+def recuperer_equipe_pref():
+    return jsonify(bd.recuperer_equipe_preferee)
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
