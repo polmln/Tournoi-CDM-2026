@@ -58,7 +58,14 @@ def sauvegarder_preferee():
 
 @app.route("/recuperer")
 def recuperer_equipe_pref():
-    return jsonify(bd.recuperer_equipe_preferee)
+    nom_equipe = bd.recuperer_equipe_preferee() # Récupère le nom (ex: "France")
+    
+    if nom_equipe:
+        # On va chercher le code drapeau dans ton dictionnaire "drapeaux" importé en haut
+        code_drapeau = drapeaux.get(nom_equipe, "un") 
+        return jsonify({"nom": nom_equipe, "drapeau": code_drapeau})
+    
+    return jsonify(None)
 
 
 if __name__ == "__main__":

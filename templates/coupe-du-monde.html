@@ -66,8 +66,9 @@
       background-color: orange;
     }
 
-    #resultat {
+    #resultat, #zone-equipes-pref {
       margin-top: 30px;
+      font-size: 20px;
     }
 
     #resultat img {
@@ -91,33 +92,71 @@
   <button onclick="afficherHistorique()">Voir l'historique</button>
   <button onclick="effacerHistorique()" title="Effacer l'historique">🗑️</button>
   <button onclick="effacerHistoriqueGagnantsFrance()">Effacer l'historique sauf pour la France</button>
-  <button onclick="window.location.href='/equipe-preferee'">⭐ Choisir mon équipe préférée</button>
+  <button onclick="allerEquipePreferee()">⭐ Choisir mon équipe préférée</button>
+  <button onclick="afficherEquipePref()">Afficher mes équipes préférées</button>
 
   <div id="resultat"></div>
   <div id="historique"></div>
+  
+  <div id="zone-equipes-pref"></div>
 
   <script>
-    const baseurl = "http://localhost:5000"   
-    //const baseurl = "https://tournoi-cdm-2026-1.onrender.com" 
+    //const baseurl = "http://localhost:5000";   
+    const baseurl = "https://tournoi-cdm-2026-1.onrender.com";
+  function afficherEquipePref() {
+    const maZone = document.getElementById("zone-equipes-pref");
+    maZone.innerHTML = "<p>Chargement...</p>";
+    
+    fetch(`${baseurl}/recuperer`)
+      .then(reponse => reponse.json())
+      .then(donnees => {
+        console.log("Données reçues :", donnees);
+
+        // Si le serveur renvoie un objet avec le nom et le drapeau (ex: {"nom": "France", "drapeau": "fr"})
+        if (donnees && donnees.nom) {
+          const codeDrapeau = donnees.drapeau || "un"; // "un" est le drapeau par défaut (United Nations) si vide
+          
+          maZone.innerHTML = `
+            <div style="margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+              <img src="https://flagcdn.com/w80/${codeDrapeau}.png" alt="${donnees.nom}" style="width: 50px; border-radius: 4px;">
+              <p>Tu as choisi : <strong>${donnees.nom}</strong> ⭐</p>
+            </div>
+          `;
+        } 
+        // Si le serveur renvoie juste du texte brut (ex: "France"), on affiche sans le drapeau
+        else if (typeof donnees === "string") {
+          maZone.innerHTML = `<p>Tu as choisi : <strong>${donnees}</strong> ⭐</p>`;
+        } 
+        else {
+          maZone.innerHTML = "<p>Tu n'as pas encore choisi d'équipe préférée.</p>";
+        }
+      })
+      .catch(erreur => {
+        console.error("Erreur :", error);
+        maZone.innerHTML = "<p>Impossible de récupérer ton équipe.</p>";
+      });
+  }
+
     function afficherEquipes() {
-      const conteneur = document.getElementById("equipes");
+      const conteneurGlobal = document.getElementById("equipes");
 
       fetch(`${baseurl}/equipes`)
         .then(reponse => reponse.json())
         .then(donnees => {
-          conteneur.innerHTML = donnees.map(equipe => `
+          conteneurGlobal.innerHTML = donnees.map(equipe => `
             <div class="carte">
               <img src="https://flagcdn.com/w80/${equipe.drapeau}.png" alt="${equipe.nom}">
               <h3>${equipe.nom}</h3>
-              <p>Coupes gagnees : ${equipe.titres}</p>
+              <p>Coupes gagnées : ${equipe.titres}</p>
             </div>
           `).join("");
         })
         .catch(erreur => {
-          conteneur.innerHTML = "<p>Impossible de contacter le serveur Python. Le serveur (app.py) est-il lance ?</p>";
+          conteneurGlobal.innerHTML = "<p>Impossible de contacter le serveur Python.</p>";
         });
     }
 
+    // Charger les équipes au démarrage
     afficherEquipes();
 
     function lancerTournoi() {
@@ -133,7 +172,7 @@
           `;
         })
         .catch(erreur => {
-          resultat.innerHTML = "<p>Impossible de contacter le serveur Python. Le serveur (app.py) est-il lance ?</p>";
+          resultat.innerHTML = "<p>Impossible de contacter le serveur Python.</p>";
         });
     }
 
@@ -145,10 +184,9 @@
         .then(reponse => reponse.json())
         .then(donnees => {
           if (donnees.length === 0) {
-            historique.innerHTML = "<p>Aucun tournoi joue pour le moment.</p>";
+            historique.innerHTML = "<p>Aucun tournoi joué pour le moment.</p>";
             return;
           }
-
           const lignes = donnees.map(ligne => `<li>${ligne.date} - ${ligne.gagnant}</li>`).join("");
           historique.innerHTML = `<h3>Historique des tournois</h3><ul>${lignes}</ul>`;
         })
@@ -180,7 +218,10 @@
           alert("Impossible de contacter le serveur Python.");
         });
     }
-  </script>
 
+    function allerEquipePreferee() {
+      window.location.href = '/equipe-preferee';
+    }
+  </script>
 </body>
 </html>

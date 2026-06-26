@@ -55,16 +55,15 @@ def clear_keep_france():
     connexion.close()
 
 def sauvegarder_equipe_preferee(equipe):
-    conn = sqlite3.connect("tournoi.db")
-    c = conn.cursor()
-    c.execute("INSERT INTO equipe_preferee (equipe) VALUES (?)", (equipe,))
-    conn.commit()
-    conn.close()
+    connexion = sqlite3.connect(NOM_FICHIER)
+    connexion.execute("DELETE FROM equipe_preferee")  # supprime l'ancienne
+    connexion.execute("INSERT INTO equipe_preferee (equipe) VALUES (?)", (equipe,))
+    connexion.commit()
+    connexion.close()
 
 def recuperer_equipe_preferee():
-    conn = sqlite3.connect("tournoi.db")
-    c = conn.cursor()
-    c.execute("SELECT equipe FROM equipe_preferee ORDER BY id DESC LIMIT 1")
-    result = c.fetchone()
-    conn.close()
-    return result[0] if result else None
+    connexion = sqlite3.connect(NOM_FICHIER)
+    curseur = connexion.execute("SELECT equipe FROM equipe_preferee LIMIT 1")
+    resultat = curseur.fetchone()
+    connexion.close()
+    return resultat[0] if resultat else None
