@@ -48,7 +48,7 @@ def effacer_historique_gagnants_france():
 def equipe_preferee():
     return render_template('equipe-preferee.html')
 
-@app.route("/equipe-preferee/sauvegarder", methods=["POST"])
+@app.route("/sauvegarder", methods=["POST"])
 def sauvegarder_preferee():
     data = request.get_json()
     bd.sauvegarder_equipe_preferee(data["equipe"])

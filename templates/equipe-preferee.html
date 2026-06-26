@@ -301,7 +301,7 @@
 
     function confirmer() {
         if (!equipeChoisie) return;
-        fetch("https://tournoi-cdm-2026-1.onrender.com/equipe-preferee/sauvegarder", {
+        fetch("https://tournoi-cdm-2026-1.onrender.com/sauvegarder", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ equipe: equipeChoisie.nom })
